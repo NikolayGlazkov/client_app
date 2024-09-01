@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head>
+  {% block title %}<title>Главная</title>{% endblock %}
+</head>
+<body>
+  <h1><a href="{% url 'index' %}">Главная</a></h1>
+    <br>
+    <h1><a href="{% url 'client_list' %}">Список клиентов</a></h1>
+    <br>
+    <a href="{% url 'index' %}">Контакты</a>
+    <br>
+    <a href="{% url 'index' %}">О нас</a>
+    <br>
+
+</body>
+</html>

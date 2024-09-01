@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Список клиентов</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <h1>Клиенты</h1>
+    <div>
+        <a href="{% url 'index' %}">Главная</a>
+        <br>
+        <br>    
+        {% for tg in tag %}
+        <tr class='success'>
+        <td><a href="{% url 'by_tag' tg.pk %}">{{ tg.name }}</a></td>
+    </tr>
+        {% endfor %}
+    </div>
+
+    {% for per in persons %}
+    <div>
+        <h2>{{ per.lastname }} {{ per.name }}</h2>
+        <p>Номер телефона: {{ per.phone_number }}</p>
+        
+        
+        <ul>
+            {% for tag in per.tags.all %}
+            <li>{{ tag.name }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endfor %} <!-- Закрытие блока for должно быть здесь -->
+
+</body>
+
+</html>
