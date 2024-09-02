@@ -8,7 +8,7 @@
     <h1>Клиенты</h1>
     <h2>Рубрика: {{ current_tag.name }}</h2>
     <div>
-        <a href="/client_crud/">Главная</a>
+        <a href="{% url 'index' %}"></a>
         {% for tag in tags %}
         <a href="{% url 'by_tag' tag.pk %}">{{ tag.name }}</a>
         {% endfor %}

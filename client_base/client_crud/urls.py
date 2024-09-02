@@ -5,6 +5,7 @@ urlpatterns = [
     path('<int:tag_id>/',by_tag,name='by_tag'),
     path("",index, name='index'),
     path("client_list/",client_list, name='client_list'),
+    path("add",PerCreateView.as_view(),name="add")
     
     
 ]

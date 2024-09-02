@@ -15,11 +15,13 @@
         <br>    
         {% for tg in tag %}
         <tr class='success'>
-        <td><a href="{% url 'by_tag' tg.pk %}">{{ tg.name }}</a></td>
-    </tr>
+            <td><a href="{% url 'by_tag' tg.pk %}">{{ tg.name }}</a></td>
+        </tr>
         {% endfor %}
     </div>
-
+    <br>
+    <a href="{% url 'add' %}">Добавить клиента</a>
+    
     {% for per in persons %}
     <div>
         <h2>{{ per.lastname }} {{ per.name }}</h2>

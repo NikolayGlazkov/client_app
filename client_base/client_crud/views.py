@@ -1,11 +1,22 @@
-from django.http import HttpResponse
-from django.template import loader
+from django.urls import reverse_lazy
+from django.views.generic.edit import CreateView
 from django.shortcuts import render
 from .models import Person,BankAccount,Tag
+from .forms import PerForm
 
+class PerCreateView(CreateView):
+    template_name = "client_crud/per_create.html"
+    form_class = PerForm
+    success_url = reverse_lazy('index')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tags'] = Tag.objects.all()
+        return context
+    
 
 def index(request):
-
+    success_url = reverse_lazy('index')
     return render(request,"client_crud/index.html")
 
 #список клиентов
@@ -15,19 +26,9 @@ def client_list(request):
     context = {"persons": persons,"tag":tag}  
     return render(request,"client_crud/client_list.html",context)
 
-# def by_inn(request, inn_number):
-#     # Фильтруем клиентов по ИНН
-#     men = Person.objects.filter(inn_number=inn_number)
-    
-#     # Получаем все счета, связанные с этим клиентом
-#     bank_accounts = BankAccount.objects.filter(person__inn_number=inn_number)
-    
-#     context = {
-#         "client": men,
-#         "bank_accounts": bank_accounts
-#     }
-#     return render(request, 'client_crud/by_inn.html', context)
 
+
+# вывод по тегам и тегов
 def by_tag(request,tag_id):
     clients = Person.objects.filter(tags=tag_id)
     tags = Tag.objects.all()
@@ -36,3 +37,4 @@ def by_tag(request,tag_id):
     return render(request,'client_crud/by_tag.html', context)
 
 
+# создание клиента в форме

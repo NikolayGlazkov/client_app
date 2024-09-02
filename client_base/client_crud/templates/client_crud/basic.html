@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="utf-8">
+    <title>{% block title %}Главная{% endblock %} - Список Клиентов</title>
+</head>
+
+<body>
+    <header>
+        <h1>Клиенты</h1>
+    </header>
+    <nav>
+        <a href="{% url 'index' %}">Главная</a></h1>
+        <a href="{% url 'add' %}">Добавить</a></h1>
+        {% for tag in tags %}
+        <a href="{% url 'by_tag' tag.pk %}">{{ tag.name }}</a>
+        {% endfor %}
+    </nav>
+    <section>
+        {% block content %}
+        {% endblock %}
+    </section>
+</body>
+
+</html>

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8" />
+    <title>создание записи о кленте</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <h1>Добавление Записи</h1>
+    <div>
+        <a href="{% url 'index' %}">Главная</a>
+        {% for tg in tag %}
+        <a href="{% url 'by_tag' tg.pk %}">{{ tg.name }}</a>
+        {% endfor %}
+    </div>
+    <div>
+        <form method="post">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="submit" value="Добавить">
+        </form>
+    </div>
+</body>
+
+</html>
