@@ -1,18 +1,14 @@
-<!doctype html>
-<html lang="ru">
+{% extends "client_crud/basic.html" %}
+{% block content %}
+{% block title %}<title>Список клиентов</title>{% endblock %}
 
 <head>
-    <meta charset="utf-8" />
-    <title>Список клиентов</title>
     <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-    <h1>Клиенты</h1>
-    <div>
-        <a href="{% url 'index' %}">Главная</a>
-        <br>
-        <br>    
+    <h1>Список клиентов</h1>
+    <div>   
         {% for tg in tag %}
         <tr class='success'>
             <td><a href="{% url 'by_tag' tg.pk %}">{{ tg.name }}</a></td>
@@ -38,4 +34,4 @@
 
 </body>
 
-</html>
+{% endblock %}

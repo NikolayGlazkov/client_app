@@ -1,8 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
+{% extends "client_crud/basic.html" %}
+{% block content %}
+{% block title %}<title>Клиенты по тэгам</title>{% endblock %}
+
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>{{ current_tag.name }} - Доска объявлений</title>
 </head>
 <body>
     <h1>Клиенты</h1>
@@ -12,6 +12,9 @@
         {% for tag in tags %}
         <a href="{% url 'by_tag' tag.pk %}">{{ tag.name }}</a>
         {% endfor %}
+        <br>
+        <br>
+        <a href="{% url 'add' %}">Добавить</a></h1>
     </div>
     {% for cl in clients %} 
     <div>
@@ -20,5 +23,6 @@
         <p>{{ cl.email }}</p>
     </div>
     {% endfor %}
-</body>
-</html>
+    <body>
+    
+        {% endblock %}

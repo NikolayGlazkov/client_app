@@ -73,12 +73,20 @@ WSGI_APPLICATION = 'client_base.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+'default': {
+    'ENGINE': 'django.db.backends.mysql',
+    'HOST': '127.0.0.1',
+    'PORT': '3306',
+    'NAME': 'client_info',
+    'USER': 'root',
+    'PASSWORD': "jn2>]iNvT}/'",
+}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
 }
 
 
@@ -122,3 +130,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+DATETIМE_FORМAT = 'J E Y H:I:s'
+TIME_FORMAT = 'H:I:s'

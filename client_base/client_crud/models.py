@@ -17,7 +17,7 @@ class Person(models.Model):
     issued_by = models.CharField(max_length=100,verbose_name='Место выдачи')
     date_of_issue = models.DateField(verbose_name='Дата выдачи')
     department_code = models.CharField(max_length=7,verbose_name='Код подразделения')
-    inn_number = models.CharField(max_length = 12,verbose_name='Номер ИНН')
+    inn_number = models.CharField(max_length = 12,verbose_name='Номер ИНН',unique=True)
     snils_number = models.CharField(max_length = 20,verbose_name='Номер СНИЛС')
     tags = models.ManyToManyField('Tag', blank=True, verbose_name='Теги')
     def __str__ (self) :

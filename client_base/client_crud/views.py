@@ -3,9 +3,10 @@ from django.views.generic.edit import CreateView
 from django.shortcuts import render
 from .models import Person,BankAccount,Tag
 from .forms import PerForm
+from django.utils import timezone
 
 class PerCreateView(CreateView):
-    template_name = "client_crud/per_create.html"
+    template_name = "client_crud/person_create.html"
     form_class = PerForm
     success_url = reverse_lazy('index')
 
@@ -14,10 +15,18 @@ class PerCreateView(CreateView):
         context['tags'] = Tag.objects.all()
         return context
     
+def your_view(request):
+    context = {
+        'now': timezone.now(),
+    }
+    return render(request, 'client_base/client_crud/templates/client_crud/basic.html', context)
+
 
 def index(request):
-    success_url = reverse_lazy('index')
-    return render(request,"client_crud/index.html")
+    context = {
+        'page_title': 'Главная',  # Укажите название страницы
+    }
+    return render(request,"client_crud/index.html",{"context":context})
 
 #список клиентов
 def client_list(request):

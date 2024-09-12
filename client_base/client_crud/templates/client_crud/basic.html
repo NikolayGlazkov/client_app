@@ -1,21 +1,24 @@
+{% load tz %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html"; charset="utf-8">
-    <title>{% block title %}Главная{% endblock %} - Список Клиентов</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>{% block title %}Главная{% endblock %}</title>
+    <link rel="stylesheet" typec"text/css" href="{% static 'client_crud/style.css' %}">
 </head>
 
 <body>
     <header>
-        <h1>Клиенты</h1>
+        <h1>Брокер-Ассист</h1>
+        <p>Current time: {% localtime on %} {{ now|date:"H:i" }} {% endlocaltime %}</p>
     </header>
     <nav>
-        <a href="{% url 'index' %}">Главная</a></h1>
-        <a href="{% url 'add' %}">Добавить</a></h1>
-        {% for tag in tags %}
-        <a href="{% url 'by_tag' tag.pk %}">{{ tag.name }}</a>
-        {% endfor %}
+        <a href="{% url 'index' %}">Главная</a>
+        <a href="{% url 'client_list' %}">Список клиентов</a>
+        <a href="{% url 'index' %}">Контакты</a>
+        <a href="{% url 'index' %}">О нас</a>
     </nav>
     <section>
         {% block content %}
