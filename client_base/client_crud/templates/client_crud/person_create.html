@@ -2,24 +2,20 @@
 {% block content %}
 {% block title %}<title>Список клиентов</title>{% endblock %}
 
-<head>
-    <meta charset="utf-8" />
-    <title>создание записи о кленте</title>
-    
-</head>
-
 <body>
     <h1>Добавление Записи</h1>
     <div>
         <a href="{% url 'index' %}">Главная</a>
-        {% for tg in tags %}  # Используйте 'tags' из контекста
+        {% for tg in tags %}
             <a href="{% url 'by_tag' tg.pk %}">{{ tg.name }}</a>
+        {% empty %}
+            <p>Нет тегов для отображения.</p>
         {% endfor %}
     </div>
     <div>
         <form method="post">
             {% csrf_token %}
-            {{form.as_p}}
+            {{ form.as_p }}
             <input type="submit" value="Добавить">
         </form>
     </div>

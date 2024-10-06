@@ -1,27 +1,10 @@
-from django.forms import ModelForm
-
+# client_crud/forms.py
+from django import forms
 from .models import Person
 
-class PerForm(ModelForm):
+class ClientForm(forms.ModelForm):
     class Meta:
         model = Person
-        fields = (
-            'name', 
-            'surname', 
-            'lastname', 
-            'date_of_birth', 
-            'place_of_birth', 
-            'city', 
-            'street', 
-            'post_index', 
-            'email', 
-            'phone_number',
-            'passport_number',
-            'passport_seria',
-            'issued_by', 
-            'date_of_issue', 
-            'department_code', 
-            'inn_number', 
-            'snils_number',
-            "tags"
-        )
+        fields = ['name', 'surname', 'lastname', 'date_of_birth', 'place_of_birth', 'city', 'street', 
+                  'post_index', 'email', 'phone_number', 'passport_number', 'passport_seria', 'issued_by', 
+                  'date_of_issue', 'department_code', 'inn_number', 'snils_number', 'tags']

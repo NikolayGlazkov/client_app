@@ -1,17 +1,17 @@
 from django.db import models
 
-# клиенты
+# Клиенты
 class Person(models.Model):
-    name = models.CharField(max_length=30, verbose_name="Имя")
-    surname = models.CharField(max_length=30, verbose_name="Отчество")
-    lastname = models.CharField(max_length=30, verbose_name='Фамилия')
+    name = models.CharField(max_length=50, verbose_name="Имя")
+    surname = models.CharField(max_length=50, verbose_name="Отчество")
+    lastname = models.CharField(max_length=50, verbose_name='Фамилия')
     date_of_birth = models.DateField(verbose_name='Дата рождения')
-    place_of_birth = models.CharField(max_length=30, verbose_name='Место рождения')
-    city = models.CharField(max_length=30, verbose_name='Город проживания')
-    street = models.CharField(max_length=40, verbose_name='Улица')
-    post_index = models.CharField(max_length=8, verbose_name='Почтовый индекс')
-    email = models.EmailField(max_length=50, verbose_name='Электронная почта')
-    phone_number = models.CharField(max_length=15, verbose_name='Номер телефона')
+    place_of_birth = models.CharField(max_length=100, verbose_name='Место рождения')
+    city = models.CharField(max_length=50, verbose_name='Город проживания')
+    street = models.CharField(max_length=50, verbose_name='Улица')
+    post_index = models.CharField(max_length=10, verbose_name='Почтовый индекс')
+    email = models.EmailField(max_length=100, verbose_name='Электронная почта')
+    phone_number = models.CharField(max_length=20, verbose_name='Номер телефона')
     passport_number = models.CharField(max_length=6, verbose_name='Номер паспорта')
     passport_seria = models.CharField(max_length=4, verbose_name='Серия паспорта')
     issued_by = models.CharField(max_length=100, verbose_name='Место выдачи')
@@ -22,21 +22,22 @@ class Person(models.Model):
     tags = models.ManyToManyField('Tag', blank=True, verbose_name='Теги')
 
     def __str__(self):
-        return self.name
+        return f'{self.name} {self.lastname}'
 
     class Meta:
         verbose_name_plural = "Клиенты"
         verbose_name = "Клиент"
 
-# класс адреса проживания
+
+# Класс адреса проживания
 class Address(models.Model):
     person = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='addresses')
-    region = models.CharField(max_length=30, verbose_name="Область")
-    city = models.CharField(max_length=30, verbose_name="Город")
-    district = models.CharField(max_length=30, verbose_name="Район")
-    street = models.CharField(max_length=30, verbose_name="Улица")
-    home_number = models.CharField(max_length=30, verbose_name="Номер дома")
-    apartment_number = models.CharField(max_length=30, verbose_name="Номер квартиры")
+    region = models.CharField(max_length=50, verbose_name="Область")
+    city = models.CharField(max_length=50, verbose_name="Город")
+    district = models.CharField(max_length=50, verbose_name="Район")
+    street = models.CharField(max_length=50, verbose_name="Улица")
+    home_number = models.CharField(max_length=10, verbose_name="Номер дома")
+    apartment_number = models.CharField(max_length=10, verbose_name="Номер квартиры", blank=True, null=True)
 
     def __str__(self):
         return self.city
@@ -46,30 +47,21 @@ class Address(models.Model):
         verbose_name = 'Адрес'
         ordering = ['city']
 
-# теги клиентов
+
+# Теги клиентов
 class Tag(models.Model):
-    tag = [
-        ('A', 'Автоперекуп'),
-        ('N', 'Недвижимость'),
-        ('S', 'Спецтехника'),
-        ('F', 'Сельхозтехника'),
-    ]
-    name = models.CharField(max_length=20, db_index=True, verbose_name='Теги', choices=tag)
+    name = models.CharField(max_length=50, verbose_name='Тег')
 
     def __str__(self):
-        return self.get_name_display()
+        return self.name
 
-    class Meta:
-        verbose_name_plural = 'Теги'
-        verbose_name = 'Тег'
-        ordering = ['name']
 
-# счета клиентов
+# Счета клиентов
 class BankAccount(models.Model):
     person = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='bank_accounts')
     account_number = models.CharField(max_length=24, verbose_name='Номер счета')
     corr_account = models.CharField(max_length=24, verbose_name='Корр. счет')
-    bank_name = models.CharField(max_length=50, verbose_name='Банк получателя')
+    bank_name = models.CharField(max_length=100, verbose_name='Банк получателя')
     bic = models.CharField(max_length=9, verbose_name='БИК')
     inn = models.CharField(max_length=15, verbose_name='ИНН банка')
     kpp = models.CharField(max_length=15, verbose_name='КПП банка')
