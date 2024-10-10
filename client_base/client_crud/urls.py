@@ -2,14 +2,19 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-    # path('<int:tag_id>/',by_tag,name='by_tag'),
-    path("",index, name='index'),
-    path("client_list/",client_list, name='client_list'),
-    path("client_info/",client_info, name='client_info'),
-    path("add",PerCreateView.as_view(),name="add"),
+    
+    path("",index, name='index'), #главная
+    path('contacts/', contacts, name='contacts'), #контакт
+    path('about/', about, name='about'), #о нас
+    path("client_list/",client_list, name='client_list'), #список клиентов
+    path("add/",PerCreateView.as_view(),name="add"), # Добавить клиента
     path('client/<int:pk>/', client_detail, name='client_detail'),  # Детальная информация о клиенте
     path('client/<int:pk>/edit/', ClientUpdateView.as_view(), name='client_edit'),  # Редактирование клиента
-    path('client/<int:pk>/delete/', ClientDeleteView.as_view(), name='client_delete'),
-    path('clients/tag/<int:tag_id>/', clients_by_tag, name='clients_by_tag'),
+    path('client/<int:pk>/delete/', ClientDeleteView.as_view(), name='client_delete'), # Удалить клиента
+    path('tag/<int:tag_id>/', clients_by_tag, name='clients_by_tag'), # по тегам смотреть
+    path('tags/', tag_list, name='tag_list'),  # Список тегов
+    path('tags/create/', tag_create, name='tag_create'),  # Создание тега
+    path('tags/<int:pk>/edit/', tag_update, name='tag_update'),  # Редактирование тега
+    path('tags/<int:pk>/delete/', tag_delete, name='tag_delete'),  # Удаление тега
     
 ]

@@ -1,0 +1,12 @@
+{% extends "client_crud/basic.html" %}
+{% block content %}
+<h1>Удаление тега "{{ tag.name }}"</h1>
+
+<p>Вы уверены, что хотите удалить этот тег?</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Удалить</button>
+    <a href="{% url 'tag_list' %}">Отмена</a>
+</form>
+{% endblock %}

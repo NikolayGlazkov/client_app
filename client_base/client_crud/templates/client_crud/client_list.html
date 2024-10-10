@@ -20,27 +20,26 @@
 
 <body>
     <h1>Список клиентов</h1>
-
-    <!-- Фильтр по тегам (если необходим) -->
+    
+    <a href="{% url 'add' %}">Добавить клиента</a>
+    <a href="{% url 'tag_list' %}">Список тегов</a>
+    <!-- Ссылка для добавления клиента -->
+    <br>
+    <br>
     <div>   
-        {% for tg in tag %}
+        {% for tg in tags %}
         <tr class='success'>
-            <td><a href="{% url 'by_tag' tg.pk %}">{{ tg.name }}</a></td>
+            <td><a href="{% url 'clients_by_tag' tg.pk %}">{{ tg.name }}</a></td>
         </tr>
         {% endfor %}
     </div>
     <br>
-
-    <!-- Ссылка для добавления клиента -->
-    <a href="{% url 'add' %}">Добавить клиента</a>
-    <br>
-
-    <!-- Таблица с клиентами -->
     <table>
         <tr>
             <th>Ф.И.О.</th>
             <th>Номер телефона</th>
             <th>Адрес электронной почты</th>
+            <th>Тэги</th>
         </tr>
         
         {% for per in persons %}
@@ -49,18 +48,15 @@
             <td><a href="{% url 'client_detail' per.pk %}">{{ per.lastname }} {{ per.name }}</a></td>
             <td>{{ per.phone_number }}</td>
             <td>{{ per.email }}</td>
-        </tr>
-
-        <!-- Теги клиента -->
-        <tr>
-            <td colspan="3">
-                <ul>
-                    {% for tag in per.tags.all %}
-                    <li>{{ tag.name }}</li>
-                    {% endfor %}
-                </ul>
+            <td>
+                {% for tag in per.tags.all %}
+                    {{ tag.name }}{% if not forloop.last %}, {% endif %}
+                {% empty %}
+                    Нет тегов
+                {% endfor %}
             </td>
         </tr>
+
         {% endfor %}
     </table>
 </body>

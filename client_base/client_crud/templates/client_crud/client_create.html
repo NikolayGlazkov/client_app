@@ -1,0 +1,98 @@
+{% extends "client_crud/basic.html" %}
+{% block content %}
+{% block title %}<title>Список клиентов</title>{% endblock %}
+
+<body>
+    
+    <h1>Добавление Записи</h1>
+    <input type="button" onclick="history.back();" value="Назад"/>
+    <br><br>
+    
+    <div>
+        <form method="post">
+            {% csrf_token %}
+    
+            <!-- Поле для фамилии с подсказкой -->
+            <label for="{{ form.lastname.id_for_label }}">{{ form.lastname.label }}</label>
+            <input type="text" name="{{ form.lastname.name }}" id="{{ form.lastname.id_for_label }}" title="{{ form.lastname.help_text }}"><br>
+    
+            <!-- Поле для имени с подсказкой -->
+            <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+            <input type="text" name="{{ form.name.name }}" id="{{ form.name.id_for_label }}" title="{{ form.name.help_text }}"><br>
+    
+            <!-- Поле для отчества с подсказкой -->
+            <label for="{{ form.surname.id_for_label }}">{{ form.surname.label }}</label>
+            <input type="text" name="{{ form.surname.name }}" id="{{ form.surname.id_for_label }}" title="{{ form.surname.help_text }}"><br>
+    
+            <!-- Поле для даты рождения с подсказкой -->
+            <label for="{{ form.date_of_birth.id_for_label }}">{{ form.date_of_birth.label }}</label>
+            <input type="text" name="{{ form.date_of_birth.name }}" id="{{ form.date_of_birth.id_for_label }}" title="{{ form.date_of_birth.help_text }}"><br>
+    
+            <!-- Поле для места рождения с подсказкой -->
+            <label for="{{ form.place_of_birth.id_for_label }}">{{ form.place_of_birth.label }}</label>
+            <input type="text" name="{{ form.place_of_birth.name }}" id="{{ form.place_of_birth.id_for_label }}" title="{{ form.place_of_birth.help_text }}"><br>
+    
+            <!-- Поле для города с подсказкой -->
+            <label for="{{ form.city.id_for_label }}">{{ form.city.label }}</label>
+            <input type="text" name="{{ form.city.name }}" id="{{ form.city.id_for_label }}" title="{{ form.city.help_text }}"><br>
+    
+            <!-- Поле для улицы с подсказкой -->
+            <label for="{{ form.street.id_for_label }}">{{ form.street.label }}</label>
+            <input type="text" name="{{ form.street.name }}" id="{{ form.street.id_for_label }}" title="{{ form.street.help_text }}"><br>
+    
+            <!-- Поле для почтового индекса с подсказкой -->
+            <label for="{{ form.post_index.id_for_label }}">{{ form.post_index.label }}</label>
+            <input type="text" name="{{ form.post_index.name }}" id="{{ form.post_index.id_for_label }}" title="{{ form.post_index.help_text }}"><br>
+    
+            <!-- Поле для электронной почты с подсказкой -->
+            <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+            <input type="text" name="{{ form.email.name }}" id="{{ form.email.id_for_label }}" title="{{ form.email.help_text }}"><br>
+    
+            <!-- Поле для номера телефона с подсказкой -->
+            <label for="{{ form.phone_number.id_for_label }}">{{ form.phone_number.label }}</label>
+            <input type="text" name="{{ form.phone_number.name }}" id="{{ form.phone_number.id_for_label }}" title="{{ form.phone_number.help_text }}"><br>
+    
+            <!-- Поле для серии паспорта с подсказкой -->
+            <label for="{{ form.passport_seria.id_for_label }}">{{ form.passport_seria.label }}</label>
+            <input type="text" name="{{ form.passport_seria.name }}" id="{{ form.passport_seria.id_for_label }}" title="{{ form.passport_seria.help_text }}"><br>
+    
+            <!-- Поле для номера паспорта с подсказкой -->
+            <label for="{{ form.passport_number.id_for_label }}">{{ form.passport_number.label }}</label>
+            <input type="text" name="{{ form.passport_number.name }}" id="{{ form.passport_number.id_for_label }}"  title="{{ form.passport_number.help_text }}"><br>
+    
+            <!-- Поле для ввода места выдочи паспорта с подсказкой -->
+            <label for="{{ form.issued_by.id_for_label }}">{{ form.issued_by.label }}</label>
+            <input type="text" name="{{ form.issued_by.name }}" id="{{ form.issued_by.id_for_label }}" title="{{ form.issued_by.help_text }}"><br>
+            
+            <!-- Поле для ввода даты выдачи паспорта с подсказкой -->
+            <label for="{{ form.date_of_issue.id_for_label }}">{{ form.date_of_issue.label }}</label>
+            <input type="text" name="{{ form.date_of_issue.name }}" id="{{ form.date_of_issue.id_for_label }}" title="{{ form.date_of_issue.help_text }}"><br>
+            
+            <!-- Поле для ввода кода подразделения паспорта с подсказкой -->
+            <label for="{{ form.department_code.id_for_label }}">{{ form.department_code.label }}</label>
+            <input type="text" name="{{ form.department_code.name }}" id="{{ form.department_code.id_for_label }}" title="{{ form.department_code.help_text }}"><br>
+            
+            <!-- Поле для ввода номера ИНН клиента -->
+            <label for="{{ form.inn_number.id_for_label }}">{{ form.inn_number.label }}</label>
+            <input type="text" name="{{ form.inn_number.name }}" id="{{ form.inn_number.id_for_label }}" title="{{ form.inn_number.help_text }}"><br>
+            
+             <!-- Поле для ввода номера СНИЛС клиента -->
+             <label for="{{ form.snils_number.id_for_label }}">{{ form.snils_number.label }}</label>
+             <input type="text" name="{{ form.snils_number.name }}" id="{{ form.snils_number.id_for_label }}" title="{{ form.snils_number.help_text }}"><br>
+             
+
+            <!-- Множественный выбор тегов в виде чекбоксов -->
+            <br>
+            <label>Выбирете тег:</label>
+            <br><br>
+            {{ form.tags }}  <!-- поле тегов -->
+    
+            <!-- Кнопка отправки формы -->
+            <br><br>
+            <button type="submit">Сохранить</button>
+        </form>
+    </div>
+    
+</body>
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "client_crud/basic.html" %}
+{% block content %}
+<h1>Список тегов</h1>
+<input type="button" onclick="history.back();" value="Назад"/>
+<br><br>
+<a href="{% url 'tag_create' %}">Добавить новый тег</a>
+<br><br>
+<table>
+    <tr>
+        <th>Тег</th>
+        <th>Редактировать</th>
+        <th>Удалить</th>
+    </tr>
+    {% for tag in tags %}
+    <tr>
+        <td>{{ tag.name }}</td>
+        <td><a href="{% url 'tag_update' tag.pk %}">Редактировать</a></td>
+        <td><a href="{% url 'tag_delete' tag.pk %}">Удалить</a></td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="3">Нет тегов.</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
