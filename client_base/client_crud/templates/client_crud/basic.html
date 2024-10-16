@@ -6,24 +6,9 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>{% block title %}Главная{% endblock %}</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'client_crud/style.css' %}">
-    <script>
-        // Функция для обновления времени
-        function updateTime() {
-            var now = new Date();
-            var hours = String(now.getHours()).padStart(2, '0');
-            var minutes = String(now.getMinutes()).padStart(2, '0');
-            var seconds = String(now.getSeconds()).padStart(2, '0');
-            var timeString = hours + ":" + minutes + ":" + seconds;
-            document.getElementById('clock').innerHTML = timeString;
-        }
-
-        // Обновляем время каждую секунду
-        setInterval(updateTime, 1000);
-
-        // Обновляем сразу после загрузки страницы
-        window.onload = updateTime;
-    </script>
+    <link rel="stylesheet" href="{% static 'css/stylesheet.css'%}" type="text/css">
+    <script src="{% static 'js/script.js' %}"></script>
+    <img src="{% static 'img/bg.jpg' %}">
 </head>
 
 <body>

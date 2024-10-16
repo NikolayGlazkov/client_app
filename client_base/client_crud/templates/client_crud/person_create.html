@@ -1,0 +1,105 @@
+{% extends "client_crud/basic.html" %}
+{% block title %}Создание клиента{% endblock %}
+{% block content %}
+
+<body>
+    <h1>Добавление Записи</h1>
+    <input type="button" onclick="history.back();" value="Пред. страница" />
+    <br><br>
+    <div>
+        <form method="post">
+            {% csrf_token %}
+
+            <!-- Данные клиента -->
+            <h2>Данные клиента</h2>
+            <table>
+                <tbody>
+                    {% for field in client_form %}
+                    <tr>
+                        <td>{{ field.label_tag }}</td>
+                        <td>{{ field }}</td>
+                        <td>
+                            {% if field.errors %}
+                            <ul class="errorlist">
+                                {% for error in field.errors %}
+                                <li>{{ error|striptags }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- Данные адреса -->
+            <h2>Адрес</h2>
+            <table>
+                <tbody>
+                    {% for field in address_form %}
+                    <tr>
+                        <td>{{ field.label_tag }}</td>
+                        <td>{{ field }}</td>
+                        <td>
+                            {% if field.errors %}
+                            <ul class="errorlist">
+                                {% for error in field.errors %}
+                                <li>{{ error|striptags }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- Контактная информация -->
+            <h2>Контактная информация</h2>
+            <table>
+                <tbody>
+                    {% for field in contact_form %}
+                    <tr>
+                        <td>{{ field.label_tag }}</td>
+                        <td>{{ field }}</td>
+                        <td>
+                            {% if field.errors %}
+                            <ul class="errorlist">
+                                {% for error in field.errors %}
+                                <li>{{ error|striptags }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- Добавляем вывод ошибок формы, если они есть -->
+            {% if client_form.errors or address_form.errors or contact_form.errors %}
+            <div class="form-errors">
+                <ul>
+                    {% for field, errors in client_form.errors.items %}
+                    <li>{{ field }}: {{ errors|striptags }}</li>
+                    {% endfor %}
+                    {% for field, errors in address_form.errors.items %}
+                    <li>{{ field }}: {{ errors|striptags }}</li>
+                    {% endfor %}
+                    {% for field, errors in contact_form.errors.items %}
+                    <li>{{ field }}: {{ errors|striptags }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+            <!-- Конец блока ошибок -->
+
+            <input type="submit" value="Добавить">
+            <input type="reset" value="Очистить">
+        </form>
+
+    </div>
+
+</body>
+
+{% endblock %}

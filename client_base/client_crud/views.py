@@ -1,6 +1,6 @@
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from .models import Person,BankAccount,Tag
 from .forms import ClientForm, TagForm
 from django.utils import timezone
@@ -9,43 +9,67 @@ from datetime import datetime
 from django.views.generic.edit import UpdateView, DeleteView
 
 
-class PerCreateView(CreateView):
-    template_name = "client_crud/client_create.html"
-    form_class = ClientForm
-    success_url = reverse_lazy('index')
+from django.shortcuts import render, redirect
+from .forms import ClientForm, AddressForm, ContactForm
+from .models import Person, Address, Contact
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['page_title'] = 'Создание клиента'
-        context['tags'] = Tag.objects.all()  # Получите все теги из базы данных
-        return context
+def client_create(request):
+    if request.method == 'POST':
+        client_form = ClientForm(request.POST)
+        address_form = AddressForm(request.POST)
+        contact_form = ContactForm(request.POST)
+        
+        if client_form.is_valid() and address_form.is_valid() and contact_form.is_valid():
+            person = client_form.save(commit=False)
+            address = address_form.save()
+            contact = contact_form.save()
+            
+            # Связываем адрес и контакты с клиентом
+            person.address = address
+            person.contact = contact
+            person.save()
+
+            return redirect('some_success_url')  # Перенаправление после успешного сохранения
+    else:
+        client_form = ClientForm()
+        address_form = AddressForm()
+        contact_form = ContactForm()
+
+    context = {
+        'client_form': client_form,
+        'address_form': address_form,
+        'contact_form': contact_form,
+    }
+
+    return render(request, 'client_crud/client_form.html', context)
+
 
     
 class ClientUpdateView(UpdateView):
     model = Person
-    fields = [
-        'name',             # Имя
-        'surname',          # Отчество
-        'lastname',         # Фамилия
-        'date_of_birth',    # Дата рождения
-        'place_of_birth',   # Место рождения
-        'city',             # Город проживания
-        'street',           # Улица
-        'post_index',       # Почтовый индекс
-        'email',            # Электронная почта
-        'phone_number',     # Номер телефона
-        'passport_number',  # Номер паспорта
-        'passport_seria',   # Серия паспорта
-        'issued_by',        # Место выдачи паспорта
-        'date_of_issue',    # Дата выдачи паспорта
-        'department_code',  # Код подразделения
-        'inn_number',       # Номер ИНН
-        'snils_number',     # Номер СНИЛС
-        'tags'              # Теги
-    ]
+    form_class = ClientForm
     template_name = 'client_crud/client_form.html'
     success_url = reverse_lazy('client_list')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['contact_form'] = ContactForm(instance=self.object.contact)
+        context['address_form'] = AddressForm(instance=self.object.address)
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        contact_form = ContactForm(request.POST, instance=self.object.contact)
+        address_form = AddressForm(request.POST, instance=self.object.address)
+
+        if form.is_valid() and contact_form.is_valid() and address_form.is_valid():
+            self.object = form.save()
+            contact_form.save()
+            address_form.save()
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
 # Представление для удаления клиента
 class ClientDeleteView(DeleteView):
@@ -85,9 +109,16 @@ def about(request):
 
 #список клиентов
 def client_list(request):
-    persons = Person.objects.all()
-    tags = Tag.objects.all()  # изменено 'tag' на 'tags'
-    context = {"persons": persons, "tags": tags}  
+    # Оптимизация выборки данных
+    persons = Person.objects.all().prefetch_related('tags')  # Предварительно загружаем теги
+    tags = Tag.objects.all()  # Получаем все теги
+    
+    # Передаем данные в контекст
+    context = {
+        "persons": persons,
+        "tags": tags
+    }  
+    
     return render(request, "client_crud/client_list.html", context)
 
 
@@ -132,3 +163,27 @@ def tag_delete(request, pk):
         tag.delete()
         return redirect('tag_list')
     return render(request, 'client_crud/tag_confirm_delete.html', {'tag': tag})
+
+
+def search_by_inn(request):
+    if request.method == 'POST':
+        inn_number = request.POST.get('inn_number')
+        if inn_number:
+            # Поиск клиента по ИНН
+            person = Person.objects.filter(inn_number=inn_number).first()
+            if person:
+                # Перенаправляем на страницу с информацией о клиенте
+                return redirect('client_detail', pk=person.pk)
+            else:
+                # Если клиент не найден, перенаправляем на страницу client_list с ошибкой
+                persons = Person.objects.all()  # Получаем список всех клиентов для отображения
+                tags = Tag.objects.all()  # Получаем все теги для отображения
+                message = "Клиент не найден."  # Создаем сообщение
+                return render(request, 'client_crud/client_list.html', {
+                    'error': message,
+                    'persons': persons,
+                    'tags': tags,
+                })
+
+    # Если не POST-запрос, просто редиректим на страницу списка клиентов
+    return redirect('client_list')

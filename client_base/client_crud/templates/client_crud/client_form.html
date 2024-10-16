@@ -6,5 +6,6 @@
         {{ form.as_p }}
         <button type="submit">Сохранить изменения</button>
     </form>
-    <a href="{% url 'client_detail' object.pk %}">Отмена</a>
+    <a href="{% url 'client_detail' pk=object.pk %}">Отмена</a>
+
 {% endblock %}
