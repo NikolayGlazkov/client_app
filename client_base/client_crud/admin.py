@@ -1,6 +1,35 @@
 # from django.contrib import admin
 
+<<<<<<< HEAD
 # from .models import Person,BankAccount,Tag
+=======
+# admin.site.register(Person)
+# admin.site.register(Tag)
+# admin.site.register(BankAccount)
+# admin.site.register(Contact)
+# admin.site.register(Address)
+
+@admin.register(Person)
+class PersonAdmin(admin.ModelAdmin):
+    list_display = ('lastname','name','surname')
+    # fields = ['lastname',('name','surname')]
+
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(BankAccount)
+class BankAccountAdmin(admin.ModelAdmin):
+    pass  
+
+@admin.register(Contact)
+class ContactAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(Address)
+class AddressAdminn(admin.ModelAdmin):
+    pass
+>>>>>>> b9ff6aa (Last_fix in main, go to temp_branch)
 
 
 # class PersonAdmin(admin.ModelAdmin):
