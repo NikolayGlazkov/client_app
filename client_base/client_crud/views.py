@@ -1,17 +1,17 @@
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 from django.shortcuts import render,redirect
-from .models import Person,BankAccount,Tag
-from .forms import ClientForm, TagForm
+from .models import Person, BankAccount, Tag, Contact, Address
+from .forms import ClientForm, AddressForm, ContactForm
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from datetime import datetime
 from django.views.generic.edit import UpdateView, DeleteView
 
+from django.views import generic
 
-from django.shortcuts import render, redirect
-from .forms import ClientForm, AddressForm, ContactForm
-from .models import Person, Address, Contact
+class PersonListView(generic.ListView):
+    model = Person
 
 def client_create(request):
     if request.method == 'POST':
@@ -79,16 +79,17 @@ class ClientDeleteView(DeleteView):
 
 
 def client_detail(request, pk):
-    client = get_object_or_404(Person, pk=pk)  # Получаем клиента по его первичному ключу (id)
-    return render(request, 'client_crud/client_detail.html', {'client': client})
+    client = get_object_or_404(Person, pk=pk)
+    contact = get_object_or_404(Contact,pk=pk)  # Получаем клиента по его первичному ключу (id)
+    return render(request, 'client_crud/client_detail.html', {'client': client,'contact':contact})
 
 
 
 def index(request):
-    current_time = datetime.now()
+    num_of_person = Person.objects.all().count()
+
     context = {
-        'page_title': 'Главная',
-        'current_time': current_time,  # Укажите название страницы
+        "num_of_person":num_of_person
     }
     return render(request, "client_crud/index.html", context)
 
@@ -110,13 +111,15 @@ def about(request):
 #список клиентов
 def client_list(request):
     # Оптимизация выборки данных
+    contact = Contact.objects.all()
     persons = Person.objects.all().prefetch_related('tags')  # Предварительно загружаем теги
     tags = Tag.objects.all()  # Получаем все теги
     
     # Передаем данные в контекст
     context = {
         "persons": persons,
-        "tags": tags
+        "tags": tags,
+        "contact":contact,
     }  
     
     return render(request, "client_crud/client_list.html", context)

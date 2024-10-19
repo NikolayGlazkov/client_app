@@ -1,11 +1,32 @@
 from django.contrib import admin
 from .models import Person, Tag, BankAccount, Contact,Address  # Не забудьте импортировать Contact
 
-admin.site.register(Person)
-admin.site.register(Tag)
-admin.site.register(BankAccount)
-admin.site.register(Contact)
-admin.site.register(Address)
+# admin.site.register(Person)
+# admin.site.register(Tag)
+# admin.site.register(BankAccount)
+# admin.site.register(Contact)
+# admin.site.register(Address)
+
+@admin.register(Person)
+class PersonAdmin(admin.ModelAdmin):
+    list_display = ('lastname','name','surname')
+    # fields = ['lastname',('name','surname')]
+
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(BankAccount)
+class BankAccountAdmin(admin.ModelAdmin):
+    pass  
+
+@admin.register(Contact)
+class ContactAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(Address)
+class AddressAdminn(admin.ModelAdmin):
+    pass
 
 # class TagInline(admin.TabularInline):
 #     model = Person.tags.through
