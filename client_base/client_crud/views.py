@@ -2,7 +2,7 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 from django.shortcuts import render,redirect
 from .models import Person, BankAccount, Tag, Contact, Address
-from .forms import ClientForm, AddressForm, ContactForm
+from .forms import ClientForm, AddressForm, ContactForm, TagForm
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from datetime import datetime
@@ -110,16 +110,15 @@ def about(request):
 
 #список клиентов
 def client_list(request):
-    # Оптимизация выборки данных
-    contact = Contact.objects.all()
-    persons = Person.objects.all().prefetch_related('tags')  # Предварительно загружаем теги
+    persons = Person.objects.all().prefetch_related('contacts', 'tags')  # Предварительно загружаем теги и контакты
+    
     tags = Tag.objects.all()  # Получаем все теги
     
     # Передаем данные в контекст
     context = {
         "persons": persons,
         "tags": tags,
-        "contact":contact,
+       
     }  
     
     return render(request, "client_crud/client_list.html", context)
