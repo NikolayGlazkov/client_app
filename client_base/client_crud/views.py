@@ -2,7 +2,7 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 from django.shortcuts import render,redirect
 from .models import Person, BankAccount, Tag, Contact, Address
-from .forms import ClientForm, AddressForm, ContactForm
+from .forms import ClientForm, AddressForm, ContactForm, TagForm
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from datetime import datetime
