@@ -1,8 +1,6 @@
-# from django.contrib import admin
+from django.contrib import admin
+from .models import Person, Tag, BankAccount, Contact,Address  # Не забудьте импортировать Contact
 
-<<<<<<< HEAD
-# from .models import Person,BankAccount,Tag
-=======
 # admin.site.register(Person)
 # admin.site.register(Tag)
 # admin.site.register(BankAccount)
@@ -29,41 +27,38 @@ class ContactAdmin(admin.ModelAdmin):
 @admin.register(Address)
 class AddressAdminn(admin.ModelAdmin):
     pass
->>>>>>> b9ff6aa (Last_fix in main, go to temp_branch)
 
+# class TagInline(admin.TabularInline):
+#     model = Person.tags.through
+#     extra = 1  # Количество пустых строк для добавления новых тегов
 
+# @admin.register(Person)
 # class PersonAdmin(admin.ModelAdmin):
-#     list_display = ('name', 'surname', 'lastname','phone_number',"inn_number") 
-#     list_display_links = ('name',)
-#     search_fields = ('name','inn_number',)
+#     list_display = ('name', 'lastname', 'get_email', 'get_phone_number')  # Измените здесь
+#     search_fields = ('name', 'lastname')
 
-# admin.site.register(Person,PersonAdmin)
-# admin.site.register(BankAccount)
-# admin.site.register(Tag)
+#     inlines = [TagInline]  # Добавляем управление тегами в админку
+#     filter_horizontal = ('tags',)  # Добавляем виджет для удобного выбора тегов
 
-from django.contrib import admin
-from .models import Person, Tag, BankAccount
+#     # Метод для получения email из связанной модели Contact
+#     def get_email(self, obj):
+#         return obj.contact.email if obj.contact else '-'
+#     get_email.short_description = 'Email'  # Заголовок для столбца
 
-class TagInline(admin.TabularInline):
-    model = Person.tags.through
-    extra = 1  # Количество пустых строк для добавления новых тегов
+#     # Метод для получения номера телефона из связанной модели Contact
+#     def get_phone_number(self, obj):
+#         return obj.contact.phone_number if obj.contact else '-'
+#     get_phone_number.short_description = 'Номер телефона'  # Заголовок для столбца
 
-@admin.register(Person)
-class PersonAdmin(admin.ModelAdmin):
-    list_display = ('name', 'lastname', 'email', 'phone_number')
-    search_fields = ('name', 'lastname', 'email', 'phone_number')
-    inlines = [TagInline]  # Добавляем управление тегами в админку
-    filter_horizontal = ('tags',)  # Добавляем виджет для удобного выбора тегов
+# @admin.register(Tag)
+# class TagAdmin(admin.ModelAdmin):
+#     list_display = ('name',)
+#     search_fields = ('name',)
 
-@admin.register(Tag)
-class TagAdmin(admin.ModelAdmin):
-    list_display = ('name',)
-    search_fields = ('name',)
+# @admin.register(BankAccount)
+# class BankAccountAdmin(admin.ModelAdmin):
+#     list_display = ('account_number', 'bank_name', 'person')
+#     search_fields = ('account_number', 'bank_name', 'person__name')
 
-@admin.register(BankAccount)
-class BankAccountAdmin(admin.ModelAdmin):
-    list_display = ('account_number', 'bank_name', 'person')
-    search_fields = ('account_number', 'bank_name', 'person__name')
-
-# Если не хотите отображать промежуточную таблицу связи в админке
-# admin.site.unregister(Person.tags.through)
+# # Если не хотите отображать промежуточную таблицу связи в админке
+# # admin.site.unregister(Person.tags.through)

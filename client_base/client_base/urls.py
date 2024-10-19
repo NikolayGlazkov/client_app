@@ -16,9 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-
-
+from django.views.generic import RedirectView
+from django.conf.urls.static import static
+from django.conf import settings
 urlpatterns = [
     path("client_crud/", include("client_crud.urls")),
     path('admin/', admin.site.urls),
 ]
+
+urlpatterns += [path("",RedirectView.as_view(url='/client_crud/',permanent=True)),]
+
+# urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -1,0 +1,23 @@
+{% extends "client_crud/basic.html" %}
+{% block content %}
+    <h1>Клиенты с тегом "{{ tag.name }}"</h1>
+    <table>
+        <tr>
+            <th>Ф.И.О.</th>
+            <th>Номер телефона</th>
+            <th>Электронная почта</th>
+        </tr>
+        {% for client in clients %}
+        <tr>
+            <td><a href="{% url 'client_detail' client.pk %}">{{ client.lastname }} {{ client.name }}</a></td>
+            <td>{{ client.phone_number }}</td>
+            <td>{{ client.email }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="3">Нет клиентов с этим тегом.</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <a href="{% url 'client_list' %}">Вернуться к списку клиентов</a>
+{% endblock %}

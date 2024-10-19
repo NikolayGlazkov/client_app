@@ -93,7 +93,20 @@ def index(request):
     }
     return render(request, "client_crud/index.html", context)
 
-    return render(request,"client_crud/index.html")
+# контакты
+def contacts(request):
+    context = {
+        'page_title': 'контакты',
+    }
+    return render(request, "client_crud/contacts.html", context)
+
+
+# о нас
+def about(request):
+    context = {
+        'page_title': 'о нас',
+    }
+    return render(request, "client_crud/about.html", context)
 
 #список клиентов
 def client_list(request):
@@ -109,17 +122,71 @@ def client_list(request):
         "contact":contact,
     }  
     
-#     context = {
-#         "client": men,
-#         "bank_accounts": bank_accounts
-#     }
-#     return render(request, 'client_crud/by_inn.html', context)
+    return render(request, "client_crud/client_list.html", context)
 
-def by_tag(request,tag_id):
-    clients = Person.objects.filter(tags=tag_id)
+
+def clients_by_tag(request, tag_id):
+    tag = get_object_or_404(Tag, pk=tag_id)  # Находим тег по его ID
+    clients = Person.objects.filter(tags=tag)  # Фильтруем клиентов по этому тегу
+    return render(request, 'client_crud/clients_by_tag.html', {'tag': tag, 'clients': clients})
+
+
+def tag_list(request):
     tags = Tag.objects.all()
-    current_tag = Tag.objects.get(pk=tag_id)
-    context = {"clients":clients,"tags":tags,"current_tag":current_tag}
-    return render(request,'client_crud/by_tag.html', context)
+    return render(request, 'client_crud/tag_list.html', {'tags': tags})
 
 
+# Создание нового тега
+def tag_create(request):
+    if request.method == 'POST':
+        form = TagForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('tag_list')
+    else:
+        form = TagForm()
+    return render(request, 'client_crud/tag_form.html', {'form': form})
+
+# Редактирование существующего тега
+def tag_update(request, pk):
+    tag = get_object_or_404(Tag, pk=pk)
+    if request.method == 'POST':
+        form = TagForm(request.POST, instance=tag)
+        if form.is_valid():
+            form.save()
+            return redirect('tag_list')
+    else:
+        form = TagForm(instance=tag)
+    return render(request, 'client_crud/tag_form.html', {'form': form})
+
+# Удаление тега
+def tag_delete(request, pk):
+    tag = get_object_or_404(Tag, pk=pk)
+    if request.method == 'POST':
+        tag.delete()
+        return redirect('tag_list')
+    return render(request, 'client_crud/tag_confirm_delete.html', {'tag': tag})
+
+
+def search_by_inn(request):
+    if request.method == 'POST':
+        inn_number = request.POST.get('inn_number')
+        if inn_number:
+            # Поиск клиента по ИНН
+            person = Person.objects.filter(inn_number=inn_number).first()
+            if person:
+                # Перенаправляем на страницу с информацией о клиенте
+                return redirect('client_detail', pk=person.pk)
+            else:
+                # Если клиент не найден, перенаправляем на страницу client_list с ошибкой
+                persons = Person.objects.all()  # Получаем список всех клиентов для отображения
+                tags = Tag.objects.all()  # Получаем все теги для отображения
+                message = "Клиент не найден."  # Создаем сообщение
+                return render(request, 'client_crud/client_list.html', {
+                    'error': message,
+                    'persons': persons,
+                    'tags': tags,
+                })
+
+    # Если не POST-запрос, просто редиректим на страницу списка клиентов
+    return redirect('client_list')
