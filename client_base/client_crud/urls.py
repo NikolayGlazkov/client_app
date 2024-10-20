@@ -20,5 +20,7 @@ urlpatterns = [
     
     path('client/<int:pk>/bank_account/create/', BankAccountCreateView.as_view(), name='bank_account_create'),
     path('bankaccount/<int:pk>/', bank_account_detail, name='bankaccount_detail'),
+    path('bankaccount/<int:pk>/delete/', BankAccountDeleteView.as_view(), name='bankaccount_delete'),
+    path('bankaccount/<int:pk>/update/', BankAccountUpdateView.as_view(), name='bankaccount_update'),
 ]
 

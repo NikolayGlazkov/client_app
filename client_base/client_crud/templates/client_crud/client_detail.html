@@ -1,6 +1,7 @@
 {% extends "client_crud/basic.html" %}
 {% block content %}
 <h1>Информация о клиенте</h1>
+<input type="button" onclick="history.back();" value="Назад" />
 <table>
     <tr>
         <th>Ф.И.О.</th>
@@ -28,13 +29,10 @@
         <th>Счета</th>
         <td>
             <ul>
-                {% for ban in bankak %}
+                {% for bank_account in bankak %}
                 <li>
-                    {% for bank_account in client.bank_accounts.all %}
                     <a href="{% url 'bankaccount_detail' bank_account.pk %}">{{ bank_account.bank_name }}</a>
                     <br>
-                    {% endfor %}
-                    
                 </li>
                 {% endfor %}
             </ul>

@@ -8,8 +8,29 @@ from django.shortcuts import get_object_or_404
 from datetime import datetime
 from django.views.generic.edit import UpdateView, DeleteView
 
-from django.views import generic
 
+def index(request):
+    num_of_person = Person.objects.all().count()
+
+    context = {
+        "num_of_person":num_of_person
+    }
+    return render(request, "client_crud/index.html", context)
+
+# контакты
+def contacts(request):
+    context = {
+        'page_title': 'контакты',
+    }
+    return render(request, "client_crud/contacts.html", context)
+
+
+# о нас
+def about(request):
+    context = {
+        'page_title': 'о нас',
+    }
+    return render(request, "client_crud/about.html", context)
 
 def client_create(request):
     if request.method == 'POST':
@@ -84,28 +105,6 @@ def client_detail(request, pk):
     return render(request, 'client_crud/client_detail.html', {'person': person, 'contact': contact, 'bankak': bankak,})
 
 
-def index(request):
-    num_of_person = Person.objects.all().count()
-
-    context = {
-        "num_of_person":num_of_person
-    }
-    return render(request, "client_crud/index.html", context)
-
-# контакты
-def contacts(request):
-    context = {
-        'page_title': 'контакты',
-    }
-    return render(request, "client_crud/contacts.html", context)
-
-
-# о нас
-def about(request):
-    context = {
-        'page_title': 'о нас',
-    }
-    return render(request, "client_crud/about.html", context)
 
 #список клиентов
 def client_list(request):
@@ -226,3 +225,26 @@ def bank_account_detail(request, pk):
     bank_account = get_object_or_404(BankAccount, pk=pk)
     context = {'bank_account': bank_account}
     return render(request, 'client_crud/bank_account_detail.html', context)
+
+
+
+class BankAccountDeleteView(DeleteView):
+    model = BankAccount
+    template_name = 'client_crud/bank_confirm_delete.html'
+    success_url = reverse_lazy('client_detail')  
+    def get_success_url(self):
+        return reverse_lazy('client_detail', kwargs={'pk': self.object.person.pk})
+    
+    
+    def get_success_url(self):
+        return reverse_lazy('client_detail', kwargs={'pk': self.object.person.pk})
+    
+
+class BankAccountUpdateView(UpdateView):
+    model = BankAccount
+    form_class = BankAccountForm
+    template_name = 'client_crud/bank_account_form.html'  # Используйте тот же шаблон, что и для создания
+    success_url = reverse_lazy('client_detail')  # Перенаправление на страницу клиента
+    def get_success_url(self):
+        return reverse_lazy('client_detail', kwargs={'pk': self.object.person.pk})
+        

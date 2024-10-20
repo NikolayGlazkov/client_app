@@ -30,4 +30,8 @@
         </tr>
     </tbody>
 </table>
+
+<a href="{% url 'bankaccount_update' pk=bank_account.pk %}">Редактировать</a> |
+<a href="{% url 'bankaccount_delete' pk=bank_account.pk %}">Удалить счет</a> |
+
 {% endblock %}
