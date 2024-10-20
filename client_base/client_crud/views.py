@@ -125,8 +125,9 @@ def client_list(request):
 
 def clients_by_tag(request, tag_id):
     tag = get_object_or_404(Tag, pk=tag_id)  # Находим тег по его ID
-    clients = Person.objects.filter(tags=tag)  # Фильтруем клиентов по этому тегу
-    return render(request, 'client_crud/clients_by_tag.html', {'tag': tag, 'clients': clients})
+    person = Person.objects.filter(tags=tag)  # Фильтруем клиентов по этому тегу
+    contact = get_object_or_404(Contact, pk=pk)
+    return render(request, 'client_crud/clients_by_tag.html', {'tag': tag, 'person': person,'contact':contact})
 
 
 def tag_list(request):
