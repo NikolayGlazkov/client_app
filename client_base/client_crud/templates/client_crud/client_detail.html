@@ -31,8 +31,20 @@
             <ul>
                 {% for bank_account in bankak %}
                 <li>
-                    <a href="{% url 'bankaccount_detail' bank_account.pk %}">{{ bank_account.bank_name }}</a>
+                    <a href="{% url 'bankaccount_detail' bank_account.pk %}">{{ bank_account.bank_name }}<br>{{bank_account.account_number}}</a>
                     <br>
+                </li>
+                {% endfor %}
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <th>Прописка</th>
+        <td>
+            <ul>
+                {% for adr in adres %}
+                <li>
+                    {{adr.city}}
                 </li>
                 {% endfor %}
             </ul>

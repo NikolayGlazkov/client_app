@@ -73,26 +73,28 @@ section {
 }
 
 /* Таблица */
+/* Таблица */
 table {
     width: 100%;
-    max-width: 600px;
     border-collapse: collapse;
-    margin: 20px 0;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Добавляем тень */
+    margin-bottom: 20px;
+    border-radius: 10px; /* Добавляем скругленные углы */
 }
 
 td,
 th {
-    padding: 8px;
+    padding: 10px;
     text-align: left;
-    border: 1px solid #ddd;
+    border: 1px solid #ddd; /* Изменяем цвет границы */
     white-space: nowrap;
 }
 
 th {
-    background-color: #b0e0e6;
+    background-color: #f2f2f2; /* Изменяем цвет фона заголовка */
     color: #333;
     font-weight: bold;
+    text-transform: uppercase; /* Делаем заголовок заглавными буквами */
 }
 
 tr:nth-child(even) {
@@ -100,16 +102,17 @@ tr:nth-child(even) {
 }
 
 tr:hover {
-    background-color: #f1f1f1;
+    background-color: #e9e9e9;
 }
 
 /* Ошибки */
 .errorlist {
-    font-size: 25px;
-    color: red;
+    font-size: 16px;
+    color: #f00; /* Изменяем цвет ошибки */
     margin: 0;
     padding: 0;
 }
+
 
 .modal-content {
     position: fixed;

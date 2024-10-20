@@ -1,10 +1,10 @@
 {% extends "client_crud/basic.html" %}
 {% block content %}
-    <h1>Удалить счет</h1>
-    <p>Вы уверены, что хотите удалить счет "{{ object.bank_name }}"?</p>
+    <h1>Удалить клиента</h1>
+    <p>Вы уверены, что хотите удалить клиента "{{ person.lastname }} {{ person.name }}"?</p>
     <form method="post">
         {% csrf_token %}
         <button type="submit">Удалить</button>
-        <a href="{% url 'client_detail' object.person.pk %}">Отмена</a>
+        <a href="{% url 'client_detail' person.pk %}">Отмена</a>
     </form>
 {% endblock %}

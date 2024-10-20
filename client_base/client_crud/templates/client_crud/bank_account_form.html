@@ -1,8 +1,8 @@
 {% extends "client_crud/basic.html" %}
 
 {% block content %}
-<h1>{{ form.instance.pk is None|yesno:"Добавить банковский счет,Редактировать банковский счет" }}</h1>
-<input type="button" onclick="history.back();" value="Назад"/>
+<h1>{% if form.instance.pk %}Редактировать банковский счет{% else %}Добавить банковский счет{% endif %}</h1>
+<input type="button" onclick="history.back();" value="Назад" />
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}

@@ -69,19 +69,16 @@ class ClientUpdateView(UpdateView):
     form_class = ClientForm
     template_name = 'client_crud/client_form.html'
     success_url = reverse_lazy('client_list')
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['contact_form'] = ContactForm(instance=self.object.contacts)
         context['address_form'] = AddressForm(instance=self.object.address)
         return context
-
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         form = self.get_form()
         contact_form = ContactForm(request.POST, instance=self.object.contact)
         address_form = AddressForm(request.POST, instance=self.object.address)
-
         if form.is_valid() and contact_form.is_valid() and address_form.is_valid():
             self.object = form.save()
             contact_form.save()
@@ -89,20 +86,22 @@ class ClientUpdateView(UpdateView):
             return self.form_valid(form)
         else:
             return self.form_invalid(form)
-
-# Представление для удаления клиента
+        
 class ClientDeleteView(DeleteView):
     model = Person
     template_name = 'client_crud/client_confirm_delete.html'
     success_url = reverse_lazy('client_list')  # После удаления возвращаемся на список клиентов
 
 
+
+
 def client_detail(request, pk):
     person = get_object_or_404(Person, pk=pk)
     contact = get_object_or_404(Contact, pk=pk)
+    adres = Address.objects.filter(person=person)
     bankak = BankAccount.objects.filter(person=person)  # Получаем все счета клиента
     
-    return render(request, 'client_crud/client_detail.html', {'person': person, 'contact': contact, 'bankak': bankak,})
+    return render(request, 'client_crud/client_detail.html', {'person': person, 'contact': contact, 'bankak': bankak,'adres':adres})
 
 
 
@@ -124,10 +123,8 @@ def client_list(request):
 
 def clients_by_tag(request, tag_id):
     tag = get_object_or_404(Tag, pk=tag_id)  # Находим тег по его ID
-    person = Person.objects.filter(tags=tag)  # Фильтруем клиентов по этому тегу
-    contact = get_object_or_404(Contact, pk=pk)
-    return render(request, 'client_crud/clients_by_tag.html', {'tag': tag, 'person': person,'contact':contact})
-
+    persons = Person.objects.filter(tags=tag)  # Фильтруем клиентов по этому тегу
+    return render(request, 'client_crud/clients_by_tag.html', {'tag': tag, 'persons': persons})
 
 def tag_list(request):
     tags = Tag.objects.all()

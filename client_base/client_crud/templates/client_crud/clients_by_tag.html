@@ -7,11 +7,27 @@
             <th>Номер телефона</th>
             <th>Электронная почта</th>
         </tr>
-        {% for client in clients %}
+        {% for person in persons %}
         <tr>
-            <td><a href="{% url 'client_detail' client.pk %}">{{ client.lastname }} {{ client.name }}</a></td>
-            <td>{{ client.phone_number }}</td>
-            <td>{{ client.email }}</td>
+            <td><a href="{% url 'client_detail' person.pk %}">{{ person.lastname }} {{ person.name }}</a></td>
+            <td>
+                {% if person.contacts.all %}
+                    {% for contact in person.contacts.all %}
+                        {{ contact.phone_number }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                {% else %}
+                    Не указан
+                {% endif %}
+            </td>
+            <td>
+                {% if person.contacts.all %}
+                    {% for contact in person.contacts.all %}
+                        {{ contact.email }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                {% else %}
+                    Не указан
+                {% endif %}
+            </td>
         </tr>
         {% empty %}
         <tr>
@@ -19,5 +35,5 @@
         </tr>
         {% endfor %}
     </table>
-    <a href="{% url 'client_list' %}">Вернуться к списку клиентов</a>
+    <a href="{% url 'client_list' %}">Назад к списку клиентов</a>
 {% endblock %}
