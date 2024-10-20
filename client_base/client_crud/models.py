@@ -48,6 +48,7 @@ class Tag(models.Model):
     class Meta:
         verbose_name_plural = "Теги"
         verbose_name = "Тег"
+        
 class Person(models.Model):
     name = models.CharField(max_length=50, verbose_name="Имя", help_text="Введите Имя")
     surname = models.CharField(max_length=50, verbose_name="Отчество", help_text="Введите Отчество")

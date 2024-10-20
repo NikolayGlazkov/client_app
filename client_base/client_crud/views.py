@@ -10,8 +10,6 @@ from django.views.generic.edit import UpdateView, DeleteView
 
 from django.views import generic
 
-class PersonListView(generic.ListView):
-    model = Person
 
 def client_create(request):
     if request.method == 'POST':
@@ -29,7 +27,7 @@ def client_create(request):
             person.contact = contact
             person.save()
 
-            return redirect('some_success_url')  # Перенаправление после успешного сохранения
+            return redirect('client_crud/client_detail.html')  # Перенаправление после успешного сохранения
     else:
         client_form = ClientForm()
         address_form = AddressForm()
@@ -53,7 +51,7 @@ class ClientUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['contact_form'] = ContactForm(instance=self.object.contact)
+        context['contact_form'] = ContactForm(instance=self.object.contacts)
         context['address_form'] = AddressForm(instance=self.object.address)
         return context
 
@@ -79,10 +77,11 @@ class ClientDeleteView(DeleteView):
 
 
 def client_detail(request, pk):
-    client = get_object_or_404(Person, pk=pk)
-    contact = get_object_or_404(Contact,pk=pk)  # Получаем клиента по его первичному ключу (id)
-    return render(request, 'client_crud/client_detail.html', {'client': client,'contact':contact})
-
+    person = get_object_or_404(Person, pk=pk)
+    contact = get_object_or_404(Contact, pk=pk)
+    bankak = BankAccount.objects.filter(person=person)  # Получаем все счета клиента
+    
+    return render(request, 'client_crud/client_detail.html', {'person': person, 'contact': contact, 'bankak': bankak,})
 
 
 def index(request):
@@ -189,3 +188,7 @@ def search_by_inn(request):
 
     # Если не POST-запрос, просто редиректим на страницу списка клиентов
     return redirect('client_list')
+
+def bankaccount_detail(request, pk):
+    bank_account = get_object_or_404(BankAccount, pk=pk)
+    return render(request, 'client_crud/bankaccount_detail.html', {'bank_account': bank_account})

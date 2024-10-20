@@ -17,4 +17,5 @@ urlpatterns = [
     path('tags/<int:pk>/edit/', tag_update, name='tag_update'),  # Редактирование тега
     path('tags/<int:pk>/delete/', tag_delete, name='tag_delete'),  # Удаление тега
     path('search/', search_by_inn, name='search_by_inn'),
+    path('bankaccount/<int:pk>/', bankaccount_detail, name='bankaccount_detail'),
 ]
