@@ -1,0 +1,33 @@
+{% extends "client_crud/basic.html" %}
+
+{% block content %}
+<h1>Информация о банковском счете</h1>
+<input type="button" onclick="history.back();" value="Назад" />
+
+<br><br>
+
+<table class="table table-striped">
+    <tbody>
+        <tr>
+            <th>Номер счета:</th>
+            <td>{{ bank_account.account_number }}</td>
+        </tr>
+        <tr>
+            <th>Банк:</th>
+            <td>{{ bank_account.bank_name }}</td>
+        </tr>
+        <tr>
+            <th>БИК:</th>
+            <td>{{ bank_account.bic }}</td>
+        </tr>
+        <tr>
+            <th>КПП:</th>
+            <td>{{ bank_account.kpp }}</td>
+        </tr>
+        <tr>
+            <th>ИНН:</th>
+            <td>{{ bank_account.inn }}</td>
+        </tr>
+    </tbody>
+</table>
+{% endblock %}

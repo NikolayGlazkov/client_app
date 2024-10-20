@@ -1,5 +1,5 @@
 from django import forms
-from .models import Person, Tag, Address, Contact
+from .models import Person, Tag, Address, Contact,BankAccount
 
 class ClientForm(forms.ModelForm):
     class Meta:
@@ -30,3 +30,8 @@ class TagForm(forms.ModelForm):
     class Meta:
         model = Tag
         fields = ['name']
+
+class BankAccountForm(forms.ModelForm):
+    class Meta:
+        model = BankAccount
+        exclude = ['person'] 

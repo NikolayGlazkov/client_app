@@ -2,7 +2,7 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
 from django.shortcuts import render,redirect
 from .models import Person, BankAccount, Tag, Contact, Address
-from .forms import ClientForm, AddressForm, ContactForm, TagForm
+from .forms import ClientForm, AddressForm, ContactForm, TagForm, BankAccountForm
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from datetime import datetime
@@ -177,27 +177,52 @@ def search_by_inn(request):
                 # Перенаправляем на страницу с информацией о клиенте
                 return redirect('client_detail', pk=person.pk)
             else:
-                # Если клиент не найден, перенаправляем на страницу client_list с ошибкой
+                # Если клиент не найден, отображаем сообщение об ошибке на странице списка клиентов
                 persons = Person.objects.all()  # Получаем список всех клиентов для отображения
                 tags = Tag.objects.all()  # Получаем все теги для отображения
-                message = "Клиент не найден."  # Создаем сообщение
-                return render(request, 'client_crud/client_list.html', {
-                    'error': message,
+                context = {
+                    'error': "Клиент не найден.",
                     'persons': persons,
                     'tags': tags,
-                })
+                }
+                return render(request, 'client_crud/client_list.html', context)
+        else:
+            # Если ИНН не был введен, показываем сообщение об ошибке
+            persons = Person.objects.all()
+            tags = Tag.objects.all()
+            context = {
+                'error': "Введите ИНН для поиска.",
+                'persons': persons,
+                'tags': tags,
+            }
+            return render(request, 'client_crud/client_list.html', context)
 
     # Если не POST-запрос, просто редиректим на страницу списка клиентов
     return redirect('client_list')
 
-def bankaccount_detail(request, pk):
+  
+
+
+
+class BankAccountCreateView(CreateView):
+    model = BankAccount
+    form_class = BankAccountForm
+    template_name = 'client_crud/bank_account_form.html'
+    success_url = reverse_lazy('client_list')
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        person_pk = self.kwargs.get('pk')  # Получите pk клиента из URL
+        kwargs['instance'] = BankAccount(person=get_object_or_404(Person, pk=person_pk)) 
+        return kwargs
+    def form_valid(self, form):
+        # Получите pk клиента из URL
+        person_pk = self.kwargs.get('pk')
+        # Создайте банковский счет, связав его с клиентом
+        form.instance.person = get_object_or_404(Person, pk=person_pk)
+        return super().form_valid(form)
+    
+
+def bank_account_detail(request, pk):
     bank_account = get_object_or_404(BankAccount, pk=pk)
-    return render(request, 'client_crud/bankaccount_detail.html', {'bank_account': bank_account})
-
-
-
-
-def add(request):
-    bbf = BdForm()
-    context = {"form":bbf}
-    return render (request, "bbord/create.html",context)
+    context = {'bank_account': bank_account}
+    return render(request, 'client_crud/bank_account_detail.html', context)

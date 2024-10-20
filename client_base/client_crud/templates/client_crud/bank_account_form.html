@@ -1,0 +1,11 @@
+{% extends "client_crud/basic.html" %}
+
+{% block content %}
+<h1>Добавить банковский счет</h1>
+<input type="button" onclick="history.back();" value="Назад"/>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Сохранить</button>
+</form>
+{% endblock %}

@@ -30,11 +30,11 @@
             <ul>
                 {% for ban in bankak %}
                 <li>
-                    {% if ban.pk %}
-                        <a href="{% url 'bankaccount_detail' ban.pk %}">{{ ban.bank_name }}</a>
-                    {% else %}
-                        {{ ban.bank_name }}
-                    {% endif %}
+                    {% for bank_account in client.bank_accounts.all %}
+                    <a href="{% url 'bankaccount_detail' bank_account.pk %}">{{ bank_account.bank_name }}</a>
+                    <br>
+                    {% endfor %}
+                    
                 </li>
                 {% endfor %}
             </ul>
@@ -45,5 +45,6 @@
 <!-- Добавляем ссылки для редактирования и удаления клиента -->
 <a href="{% url 'client_edit' person.pk %}">Редактировать</a> |
 <a href="{% url 'client_delete' person.pk %}">Удалить</a> |
-<a href="{% url 'client_list' %}">Вернуться к списку клиентов</a>
+<a href="{% url 'bank_account_create' person.pk %}">Добавить банковский счет</a> |
+<a href="{% url 'client_list' %}">Вернуться к списку клиентов</a> |
 {% endblock %}
