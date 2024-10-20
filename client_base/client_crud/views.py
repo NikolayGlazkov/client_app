@@ -192,3 +192,11 @@ def search_by_inn(request):
 def bankaccount_detail(request, pk):
     bank_account = get_object_or_404(BankAccount, pk=pk)
     return render(request, 'client_crud/bankaccount_detail.html', {'bank_account': bank_account})
+
+
+
+
+def add(request):
+    bbf = BdForm()
+    context = {"form":bbf}
+    return render (request, "bbord/create.html",context)
